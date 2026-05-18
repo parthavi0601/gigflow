@@ -13,6 +13,8 @@ import type { Lead } from "../../types/lead";
 const schema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
+  phone: z.string().min(5, "Phone number is required"),
+  lastMessage: z.string().optional(),
   status: z.enum(["New", "Contacted", "Qualified", "Lost"]).optional(),
   source: z.enum(["Website", "Instagram", "Referral"]),
 });
@@ -42,8 +44,15 @@ export const LeadFormModal = ({ isOpen, onClose, editLead }: LeadFormModalProps)
     if (isOpen) {
       reset(
         editLead
-          ? { name: editLead.name, email: editLead.email, status: editLead.status, source: editLead.source }
-          : { name: "", email: "", status: "New", source: "Website" }
+          ? { 
+              name: editLead.name, 
+              email: editLead.email, 
+              phone: editLead.phone || "",
+              lastMessage: editLead.lastMessage || "",
+              status: editLead.status, 
+              source: editLead.source 
+            }
+          : { name: "", email: "", phone: "", lastMessage: "", status: "New", source: "Website" }
       );
     }
   }, [isOpen, editLead, reset]);
@@ -97,6 +106,21 @@ export const LeadFormModal = ({ isOpen, onClose, editLead }: LeadFormModalProps)
           placeholder="e.g. jane@example.com"
           error={errors.email?.message}
           {...register("email")}
+        />
+        <Input
+          id="lead-phone"
+          label="Phone Number"
+          type="tel"
+          placeholder="e.g. +1 234 567 8900"
+          error={errors.phone?.message}
+          {...register("phone")}
+        />
+        <Input
+          id="lead-last-message"
+          label="Last Message (Optional)"
+          placeholder="e.g. Customer asked about pricing..."
+          error={errors.lastMessage?.message}
+          {...register("lastMessage")}
         />
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
           <Select

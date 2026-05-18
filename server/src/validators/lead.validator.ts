@@ -3,6 +3,8 @@ import { z } from "zod";
 export const createLeadSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
+  phone: z.string().min(5, "Phone number is required"),
+  lastMessage: z.string().optional(),
   status: z.enum(["New", "Contacted", "Qualified", "Lost"]).optional(),
   source: z.enum(["Website", "Instagram", "Referral"]),
 });
@@ -10,6 +12,8 @@ export const createLeadSchema = z.object({
 export const updateLeadSchema = z.object({
   name: z.string().min(2).optional(),
   email: z.string().email().optional(),
+  phone: z.string().min(5).optional(),
+  lastMessage: z.string().optional(),
   status: z.enum(["New", "Contacted", "Qualified", "Lost"]).optional(),
   source: z.enum(["Website", "Instagram", "Referral"]).optional(),
 });

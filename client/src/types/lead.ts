@@ -5,6 +5,8 @@ export interface Lead {
   _id: string;
   name: string;
   email: string;
+  phone: string;
+  lastMessage?: string;
   status: LeadStatus;
   source: LeadSource;
   createdBy: {
@@ -20,6 +22,8 @@ export interface Lead {
 export interface CreateLeadData {
   name: string;
   email: string;
+  phone: string;
+  lastMessage?: string;
   status?: LeadStatus;
   source: LeadSource;
 }
@@ -27,6 +31,8 @@ export interface CreateLeadData {
 export interface UpdateLeadData {
   name?: string;
   email?: string;
+  phone?: string;
+  lastMessage?: string;
   status?: LeadStatus;
   source?: LeadSource;
 }

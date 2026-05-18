@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Plus, Sparkles } from "lucide-react";
 import { DashboardLayout } from "../components/layout/DashboardLayout";
 import { StatsCards } from "../components/dashboard/StatsCards";
+import { PipelineHealth } from "../components/dashboard/PipelineHealth";
 import { Card } from "../components/ui/Card";
 import { Button } from "../components/ui/Button";
 import { Spinner } from "../components/ui/Spinner";
@@ -67,7 +68,10 @@ export const DashboardPage = () => {
               <Spinner size="lg" style={{ color: "var(--brand-500)" }} />
             </div>
           ) : stats ? (
-            <StatsCards stats={stats} />
+            <>
+              <StatsCards stats={stats} />
+              <PipelineHealth stats={stats} />
+            </>
           ) : null}
         </div>
 

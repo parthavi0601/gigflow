@@ -4,6 +4,8 @@ export interface ILead {
   _id: mongoose.Types.ObjectId;
   name: string;
   email: string;
+  phone: string;
+  lastMessage?: string;
   status: "New" | "Contacted" | "Qualified" | "Lost";
   source: "Website" | "Instagram" | "Referral";
   createdBy: mongoose.Types.ObjectId;
@@ -15,6 +17,8 @@ const leadSchema = new mongoose.Schema<ILead>(
   {
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, lowercase: true, trim: true },
+    phone: { type: String, required: true, trim: true },
+    lastMessage: { type: String, trim: true },
     status: {
       type: String,
       enum: ["New", "Contacted", "Qualified", "Lost"],
