@@ -3,6 +3,7 @@ import cors from "cors";
 import { env } from "./config/env";
 import authRoutes from "./routes/auth.routes";
 import leadRoutes from "./routes/lead.routes";
+import aiRoutes from "./routes/ai.routes";
 import { errorHandler } from "./middleware/error.middleware";
 
 const app = express();
@@ -17,6 +18,7 @@ app.get("/health", (_req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/leads", leadRoutes);
+app.use("/api/ai", aiRoutes);
 
 app.use(errorHandler);
 

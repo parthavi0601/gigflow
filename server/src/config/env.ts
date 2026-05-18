@@ -11,6 +11,7 @@ const envSchema = z.object({
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
   RESEND_API_KEY: z.string().optional(),
   SENDER_EMAIL: z.string().optional(),
+  OPENAI_API_KEY: z.string().optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);

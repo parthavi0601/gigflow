@@ -36,4 +36,7 @@ export const leadsApi = {
       params: buildParams(filters),
       responseType: "blob",
     }),
+
+  draftEmail: (id: string) =>
+    api.post<{ data: { subject: string; body: string } }>(`/ai/draft-email/${id}`),
 };

@@ -12,6 +12,7 @@ import {
   MessageSquare,
   PhoneCall,
   Send,
+  Sparkles,
 } from "lucide-react";
 import type { ElementType } from "react";
 import { DashboardLayout } from "../components/layout/DashboardLayout";
@@ -33,6 +34,24 @@ export const LeadDetailsPage = () => {
   const [lead, setLead] = useState<Lead | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [editOpen, setEditOpen] = useState(false);
+  const [isDrafting, setIsDrafting] = useState(false);
+
+  const handleDraftEmail = async () => {
+    if (!lead) return;
+    setIsDrafting(true);
+    try {
+      const res = await leadsApi.draftEmail(lead._id);
+      const { subject, body } = res.data.data;
+      
+      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${lead.email}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.open(gmailUrl, "_blank");
+    } catch (error) {
+      console.error("Failed to draft email", error);
+      alert("Failed to draft email. Please check your server console or OpenAI API key.");
+    } finally {
+      setIsDrafting(false);
+    }
+  };
 
   useEffect(() => {
     if (!id) return;
@@ -201,6 +220,16 @@ export const LeadDetailsPage = () => {
                     Gmail {lead.email}
                   </Button>
                 </a>
+                
+                <Button 
+                  variant="primary" 
+                  style={{ width: "100%", justifyContent: "center", background: "linear-gradient(135deg, #10b981, #059669)", border: "none" }}
+                  onClick={handleDraftEmail}
+                  loading={isDrafting}
+                >
+                  <Sparkles size={15} />
+                  Draft AI Email
+                </Button>
               </div>
             </Card>
 

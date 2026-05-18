@@ -4,8 +4,10 @@ GigFlow is a modern, responsive Smart Leads Dashboard built with the MERN stack.
 
 ## Key Features
 - **Lead Management:** Seamlessly add, track, and categorize leads with intuitive interfaces.
+- **AI Email Drafter:** Integrated OpenAI to automatically generate personalized, context-aware sales emails for leads with one click.
 - **Pipeline Health Dashboard:** Real-time statistics, conversion rates, and recent activity tracking.
 - **Secure Authentication:** JWT-based login with a multi-step OTP verification flow powered by Resend API.
+- **Rich Demographics:** Captures extended lead/user info like phone, gender, age, location, and interest level tracking.
 - **Fully Responsive Design:** A beautiful, dynamic user interface that works flawlessly across desktops, tablets, and all mobile devices.
 - **Role-Based Access:** Distinguishes between 'admin' and 'sales' users for proper data access control.
 
