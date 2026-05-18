@@ -80,5 +80,7 @@ cd gigflow
 
 <img width="1918" height="868" alt="image" src="https://github.com/user-attachments/assets/fd7b21fe-68be-4f92-86b9-ac3ae0d175ec" />
 <img width="1916" height="856" alt="image" src="https://github.com/user-attachments/assets/3f03c62b-b19b-40f0-8fc0-8b3f90ba8554" />
-<img width="1913" height="856" alt="image" src="https://github.com/user-attachments/assets/e1953eb0-6290-4aa8-85e4-b8ddc4fd2c89" />
+
+<img width="1917" height="856" alt="image" src="https://github.com/user-attachments/assets/5ba7376d-e802-421e-bf4f-035f09b56f6a" />
+
 
