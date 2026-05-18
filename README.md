@@ -1,22 +1,22 @@
-# GigFlow 🚀
+# GigFlow 
 
 GigFlow is a modern, responsive Smart Leads Dashboard built with the MERN stack. Designed for sales professionals, it provides a comprehensive overview of pipeline health, actionable insights, and robust lead management capabilities.
 
-## ✨ Key Features
+## Key Features
 - **Lead Management:** Seamlessly add, track, and categorize leads with intuitive interfaces.
 - **Pipeline Health Dashboard:** Real-time statistics, conversion rates, and recent activity tracking.
 - **Secure Authentication:** JWT-based login with a multi-step OTP verification flow powered by Resend API.
 - **Fully Responsive Design:** A beautiful, dynamic user interface that works flawlessly across desktops, tablets, and all mobile devices.
 - **Role-Based Access:** Distinguishes between 'admin' and 'sales' users for proper data access control.
 
-## 🛠️ Technology Stack
+## Technology Stack
 - **Frontend:** React 18, Vite, TypeScript, Vanilla CSS (with modern responsive grids), Lucide Icons, Axios, Zustand.
 - **Backend:** Node.js, Express, TypeScript, Mongoose, Zod (Validation), bcryptjs, jsonwebtoken.
 - **Database:** MongoDB Atlas.
 - **Email Service:** Resend API (for high-deliverability OTP emails).
 - **Deployment:** Vercel (Frontend) & Render (Backend).
 
-## 🚀 Local Setup Instructions
+## Local Setup Instructions
 
 ### Prerequisites
 - Node.js (v18+ recommended)
@@ -70,9 +70,13 @@ cd gigflow
    npm run dev
    ```
 
-## 🚀 Production Deployment
+## Production Deployment
 - **Frontend (Vercel):** Deploy the `client` directory. Ensure you set the `VITE_API_URL` environment variable to your live backend URL (e.g., `https://gigflow-api.onrender.com/api`).
 - **Backend (Render):** Deploy the `server` directory. Ensure you configure all backend environment variables (Database URI, JWT Secret, Resend API key) in the Render dashboard.
 
-## 👥 Contributors
-Developed as a Full-Stack Capstone Project.
+<img width="1915" height="848" alt="image" src="https://github.com/user-attachments/assets/e53bc22b-4fc5-4657-8c0b-97bf3d221e1c" />
+
+<img width="1918" height="868" alt="image" src="https://github.com/user-attachments/assets/fd7b21fe-68be-4f92-86b9-ac3ae0d175ec" />
+<img width="1916" height="856" alt="image" src="https://github.com/user-attachments/assets/3f03c62b-b19b-40f0-8fc0-8b3f90ba8554" />
+<img width="1913" height="856" alt="image" src="https://github.com/user-attachments/assets/e1953eb0-6290-4aa8-85e4-b8ddc4fd2c89" />
+
