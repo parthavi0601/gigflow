@@ -55,7 +55,7 @@ export const DashboardPage = () => {
               </h2>
               <p className="welcome-sub">Your pipeline at a glance — stay ahead of every deal.</p>
             </div>
-            <Link to={ROUTES.LEADS}>
+            <Link to={ROUTES.LEADS} state={{ openNewLead: true }}>
               <Button variant="primary" size="sm">
                 <Plus size={15} />
                 New Lead

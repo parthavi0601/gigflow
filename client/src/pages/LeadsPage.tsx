@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { Plus, Download, LayoutGrid, List, X } from "lucide-react";
 import { DashboardLayout } from "../components/layout/DashboardLayout";
 import { SearchBar } from "../components/leads/SearchBar";
@@ -27,9 +28,19 @@ export const LeadsPage = () => {
   const [isExporting, setIsExporting] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
 
+  const location = useLocation();
+
   useEffect(() => {
     fetchLeads();
   }, [fetchLeads]);
+
+  useEffect(() => {
+    if (location.state?.openNewLead) {
+      setEditLead(null);
+      setModalOpen(true);
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   const handleEdit = (lead: Lead) => {
     setEditLead(lead);
