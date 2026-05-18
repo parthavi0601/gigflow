@@ -27,7 +27,7 @@ GigFlow is a modern, responsive Smart Leads Dashboard built with the MERN stack.
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/gigflow.git
+git clone https://github.com/parthavi0601/gigflow.git
 cd gigflow
 ```
 
