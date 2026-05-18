@@ -10,6 +10,7 @@ const envSchema = z.object({
   CLIENT_URL: z.string().default("http://localhost:5173"),
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
   RESEND_API_KEY: z.string().optional(),
+  SENDER_EMAIL: z.string().optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);

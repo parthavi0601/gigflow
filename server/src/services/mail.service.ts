@@ -1,32 +1,19 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import { env } from "../config/env";
 
-export const sendOTP = async (email: string, otp: string) => {
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
+const resend = new Resend(env.RESEND_API_KEY || process.env.RESEND_API_KEY);
 
-  if (!user || !pass) {
-    throw new Error("Email sending failed: SMTP_USER and SMTP_PASS environment variables are not configured.");
+export const sendOTP = async (email: string, otp: string) => {
+  if (!env.RESEND_API_KEY && !process.env.RESEND_API_KEY) {
+    throw new Error("Email sending failed: RESEND_API_KEY is not configured.");
   }
 
-  // Explicitly use port 587 which Render usually allows!
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false, // true for 465, false for 587
-    auth: {
-      user,
-      pass,
-    },
-    tls: {
-      rejectUnauthorized: false,
-    },
-    connectionTimeout: 10000, // 10 second timeout so it doesn't hang infinitely
-  });
+  // Use the verified domain email, fallback to testing email
+  const sender = env.SENDER_EMAIL || process.env.SENDER_EMAIL || "GigFlow Dashboard <onboarding@resend.dev>";
 
-  const mailOptions = {
-    from: `"GigFlow Dashboard" <${user}>`,
-    to: email,
+  const { data, error } = await resend.emails.send({
+    from: sender,
+    to: [email],
     subject: "Your GigFlow Verification Code",
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; text-align: center;">
@@ -39,7 +26,10 @@ export const sendOTP = async (email: string, otp: string) => {
         <p style="font-size: 12px; color: #9ca3af; margin-top: 32px;">If you didn't request this, you can safely ignore this email.</p>
       </div>
     `,
-  };
+  });
 
-  await transporter.sendMail(mailOptions);
+  if (error) {
+    console.error("Resend Error:", error);
+    throw new Error(error.message);
+  }
 };
