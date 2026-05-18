@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { env } from "../config/env";
 
 export const sendOTP = async (email: string, otp: string) => {
   const user = process.env.SMTP_USER;
@@ -8,8 +9,11 @@ export const sendOTP = async (email: string, otp: string) => {
     throw new Error("Email sending failed: SMTP_USER and SMTP_PASS environment variables are not configured.");
   }
 
+  // Explicitly use port 587 which Render usually allows!
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false, // true for 465, false for 587
     auth: {
       user,
       pass,
@@ -17,6 +21,7 @@ export const sendOTP = async (email: string, otp: string) => {
     tls: {
       rejectUnauthorized: false,
     },
+    connectionTimeout: 10000, // 10 second timeout so it doesn't hang infinitely
   });
 
   const mailOptions = {
