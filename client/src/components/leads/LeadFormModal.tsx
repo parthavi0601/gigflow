@@ -15,6 +15,9 @@ const schema = z.object({
   email: z.string().email("Invalid email address"),
   phone: z.string().min(5, "Phone number is required"),
   lastMessage: z.string().optional(),
+  companyName: z.string().min(2, "Required"),
+  companyDescription: z.string().min(5, "Required"),
+  interestLevel: z.number().min(1, "1-10").max(10, "1-10"),
   status: z.enum(["New", "Contacted", "Qualified", "Lost"]).optional(),
   source: z.enum(["Website", "Instagram", "Referral"]),
 });
@@ -49,10 +52,13 @@ export const LeadFormModal = ({ isOpen, onClose, editLead }: LeadFormModalProps)
               email: editLead.email, 
               phone: editLead.phone || "",
               lastMessage: editLead.lastMessage || "",
+              companyName: editLead.companyName || "",
+              companyDescription: editLead.companyDescription || "",
+              interestLevel: editLead.interestLevel || 5,
               status: editLead.status, 
               source: editLead.source 
             }
-          : { name: "", email: "", phone: "", lastMessage: "", status: "New", source: "Website" }
+          : { name: "", email: "", phone: "", lastMessage: "", companyName: "", companyDescription: "", interestLevel: 5, status: "New", source: "Website" }
       );
     }
   }, [isOpen, editLead, reset]);
@@ -121,6 +127,32 @@ export const LeadFormModal = ({ isOpen, onClose, editLead }: LeadFormModalProps)
           placeholder="e.g. Customer asked about pricing..."
           error={errors.lastMessage?.message}
           {...register("lastMessage")}
+        />
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <Input
+            id="lead-company"
+            label="Company Name"
+            placeholder="e.g. Acme Corp"
+            error={errors.companyName?.message}
+            {...register("companyName")}
+          />
+          <Input
+            id="lead-interest"
+            label="Interest Level (1-10)"
+            type="number"
+            min="1"
+            max="10"
+            placeholder="5"
+            error={errors.interestLevel?.message}
+            {...register("interestLevel", { valueAsNumber: true })}
+          />
+        </div>
+        <Input
+          id="lead-company-desc"
+          label="Company Description"
+          placeholder="e.g. A fast-growing tech startup..."
+          error={errors.companyDescription?.message}
+          {...register("companyDescription")}
         />
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
           <Select

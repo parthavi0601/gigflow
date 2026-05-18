@@ -5,6 +5,7 @@ import { z } from "zod";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, User, KeyRound, ArrowLeft } from "lucide-react";
 import { Input } from "../ui/Input";
+import { Select } from "../ui/Select";
 import { Button } from "../ui/Button";
 import { authApi } from "../../api/authApi";
 import { useAuthStore } from "../../store/authStore";
@@ -23,6 +24,10 @@ const registerSchema = z.object({
     .min(8, "At least 8 characters")
     .regex(/[A-Z]/, "Must contain uppercase")
     .regex(/[0-9]/, "Must contain a number"),
+  phone: z.string().min(5, "Required"),
+  gender: z.enum(["Male", "Female", "Other", "Prefer not to say"]).default("Male"),
+  age: z.number().min(1, "Invalid age"),
+  location: z.string().min(2, "Required"),
 });
 
 type LoginValues = z.infer<typeof loginSchema>;
@@ -146,14 +151,53 @@ export const AuthForm = ({ mode }: AuthFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
       {!isLogin && (
-        <Input
-          id="auth-name"
-          label="Full Name"
-          placeholder="Your full name"
-          icon={<User size={16} />}
-          error={(errors as { name?: { message: string } }).name?.message}
-          {...register("name")}
-        />
+        <>
+          <Input
+            id="auth-name"
+            label="Full Name"
+            placeholder="Your full name"
+            icon={<User size={16} />}
+            error={(errors as any).name?.message}
+            {...register("name")}
+          />
+          <Input
+            id="auth-phone"
+            label="Phone Number"
+            type="tel"
+            placeholder="e.g. +1 234 567 8900"
+            error={(errors as any).phone?.message}
+            {...register("phone")}
+          />
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            <Select
+              id="auth-gender"
+              label="Gender"
+              options={[
+                { value: "Male", label: "Male" },
+                { value: "Female", label: "Female" },
+                { value: "Other", label: "Other" },
+                { value: "Prefer not to say", label: "Prefer not to say" }
+              ]}
+              error={(errors as any).gender?.message}
+              {...register("gender")}
+            />
+            <Input
+              id="auth-age"
+              label="Age"
+              type="number"
+              placeholder="e.g. 25"
+              error={(errors as any).age?.message}
+              {...register("age", { valueAsNumber: true })}
+            />
+          </div>
+          <Input
+            id="auth-location"
+            label="Location"
+            placeholder="e.g. New York, USA"
+            error={(errors as any).location?.message}
+            {...register("location")}
+          />
+        </>
       )}
       <Input
         id="auth-email"

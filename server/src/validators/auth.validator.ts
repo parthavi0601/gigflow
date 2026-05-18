@@ -8,6 +8,10 @@ export const registerSchema = z.object({
     .min(8, "Password must be at least 8 characters")
     .regex(/[A-Z]/, "Password must contain an uppercase letter")
     .regex(/[0-9]/, "Password must contain a number"),
+  phone: z.string().min(5, "Phone number is required"),
+  gender: z.enum(["Male", "Female", "Other", "Prefer not to say"]),
+  age: z.union([z.number(), z.string()]).transform((val) => Number(val)).refine((n) => !isNaN(n) && n > 0, { message: "Invalid age" }),
+  location: z.string().min(2, "Location is required"),
   role: z.enum(["admin", "sales"]).optional(),
 });
 

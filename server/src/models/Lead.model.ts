@@ -6,6 +6,9 @@ export interface ILead {
   email: string;
   phone: string;
   lastMessage?: string;
+  companyName: string;
+  companyDescription: string;
+  interestLevel: number;
   status: "New" | "Contacted" | "Qualified" | "Lost";
   source: "Website" | "Instagram" | "Referral";
   createdBy: mongoose.Types.ObjectId;
@@ -19,6 +22,9 @@ const leadSchema = new mongoose.Schema<ILead>(
     email: { type: String, required: true, lowercase: true, trim: true },
     phone: { type: String, required: true, trim: true },
     lastMessage: { type: String, trim: true },
+    companyName: { type: String, required: true, trim: true },
+    companyDescription: { type: String, required: true, trim: true },
+    interestLevel: { type: Number, required: true, min: 1, max: 10, default: 5 },
     status: {
       type: String,
       enum: ["New", "Contacted", "Qualified", "Lost"],

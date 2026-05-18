@@ -24,6 +24,10 @@ export interface RegisterCredentials {
   name: string;
   email: string;
   password: string;
+  phone: string;
+  gender: "Male" | "Female" | "Other" | "Prefer not to say";
+  age: number;
+  location: string;
   role?: "admin" | "sales";
 }
 

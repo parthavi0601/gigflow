@@ -7,6 +7,9 @@ export interface Lead {
   email: string;
   phone: string;
   lastMessage?: string;
+  companyName: string;
+  companyDescription: string;
+  interestLevel: number;
   status: LeadStatus;
   source: LeadSource;
   createdBy: {
@@ -24,6 +27,9 @@ export interface CreateLeadData {
   email: string;
   phone: string;
   lastMessage?: string;
+  companyName: string;
+  companyDescription: string;
+  interestLevel: number;
   status?: LeadStatus;
   source: LeadSource;
 }
@@ -33,6 +39,9 @@ export interface UpdateLeadData {
   email?: string;
   phone?: string;
   lastMessage?: string;
+  companyName?: string;
+  companyDescription?: string;
+  interestLevel?: number;
   status?: LeadStatus;
   source?: LeadSource;
 }

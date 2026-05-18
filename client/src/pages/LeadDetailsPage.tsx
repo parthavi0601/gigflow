@@ -138,6 +138,33 @@ export const LeadDetailsPage = () => {
                 </div>
               </Card>
             )}
+            
+            <Card>
+              <div style={{ padding: "20px 24px", borderBottom: "1px solid var(--surface-border)" }}>
+                <h3 style={{ fontSize: 14, fontWeight: 700, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                  Company Info
+                </h3>
+              </div>
+              <div style={{ padding: 24, display: "grid", gap: 16 }}>
+                <div>
+                  <p style={{ fontSize: 12, color: "var(--text-muted)", fontWeight: 500, marginBottom: 4 }}>Company Name</p>
+                  <p style={{ fontSize: 15, color: "var(--text-primary)", fontWeight: 500 }}>{lead.companyName}</p>
+                </div>
+                <div>
+                  <p style={{ fontSize: 12, color: "var(--text-muted)", fontWeight: 500, marginBottom: 4 }}>Description</p>
+                  <p style={{ fontSize: 14, color: "var(--text-primary)", lineHeight: 1.5 }}>{lead.companyDescription}</p>
+                </div>
+                <div>
+                  <p style={{ fontSize: 12, color: "var(--text-muted)", fontWeight: 500, marginBottom: 4 }}>Interest Level</p>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <div style={{ flex: 1, height: 6, background: "var(--surface-2)", borderRadius: 3, overflow: "hidden" }}>
+                      <div style={{ height: "100%", width: `${(lead.interestLevel / 10) * 100}%`, background: lead.interestLevel >= 7 ? "var(--success)" : lead.interestLevel >= 4 ? "var(--warning)" : "var(--error)" }} />
+                    </div>
+                    <span style={{ fontSize: 14, fontWeight: 700, color: "var(--text-primary)" }}>{lead.interestLevel}/10</span>
+                  </div>
+                </div>
+              </div>
+            </Card>
           </div>
 
           {/* Right Column */}
