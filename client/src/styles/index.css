@@ -861,9 +861,14 @@ h1, h2, h3, .font-display {
   grid-template-columns: 1fr;
   gap: 20px;
 }
+.dashboard-main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 @media (min-width: 1100px) {
   .dashboard-grid { grid-template-columns: 1fr 380px; align-items: start; }
-  .dashboard-main { display: flex; flex-direction: column; gap: 20px; }
 }
 .welcome-banner {
   display: grid;
