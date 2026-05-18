@@ -1,0 +1,11 @@
+# Inherits from root .gitignore
+# Server-specific additions below
+
+# Compiled TypeScript output
+dist/
+
+# ts-node / ts-node-dev cache
+.ts-node/
+
+# Upload directories
+uploads/
