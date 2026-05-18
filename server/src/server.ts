@@ -4,7 +4,6 @@ import app from "./app";
 
 dns.setDefaultResultOrder("ipv4first");
 import { env } from "./config/env";
-import { seedUsers } from "./seeds/seedUsers";
 
 const start = async () => {
   const isAtlas = env.MONGO_URI.includes("mongodb.net");
@@ -15,8 +14,6 @@ const start = async () => {
       }),
   });
   console.log("Connected to MongoDB");
-
-  await seedUsers();
 
   app.listen(env.PORT, () => {
     console.log(`GigFlow API running on port ${env.PORT} [${env.NODE_ENV}]`);
