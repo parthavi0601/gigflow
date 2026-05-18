@@ -73,8 +73,8 @@ export const LeadTable = ({ onEdit }: LeadTableProps) => {
             </tr>
           </thead>
           <tbody>
-            {leads.map((lead) => (
-              <tr key={lead._id}>
+            {leads.map((lead, i) => (
+              <tr key={lead._id} className="table-row-fade" style={{ animationDelay: `${i * 30}ms` }}>
                 <td>
                   <Link
                     to={ROUTES.LEAD_DETAILS(lead._id)}

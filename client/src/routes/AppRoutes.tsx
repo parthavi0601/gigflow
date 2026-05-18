@@ -3,6 +3,7 @@ import { ProtectedRoute } from "./ProtectedRoute";
 import { LoginPage } from "../pages/LoginPage";
 import { RegisterPage } from "../pages/RegisterPage";
 import { DashboardPage } from "../pages/DashboardPage";
+import { LeadsPage } from "../pages/LeadsPage";
 import { LeadDetailsPage } from "../pages/LeadDetailsPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
 import { ROUTES } from "../constants/routes";
@@ -14,6 +15,7 @@ export const AppRoutes = () => (
 
     <Route element={<ProtectedRoute />}>
       <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
+      <Route path={ROUTES.LEADS} element={<LeadsPage />} />
       <Route path={ROUTES.LEAD_DETAILS_PATTERN} element={<LeadDetailsPage />} />
     </Route>
 

@@ -8,6 +8,11 @@ import {
 } from "../validators/lead.validator";
 import * as leadService from "../services/lead.service";
 
+export const getLeadStats = asyncHandler(async (_req: Request, res: Response) => {
+  const stats = await leadService.getLeadStats();
+  res.status(200).json({ success: true, message: "Stats fetched", data: stats });
+});
+
 export const getLeads = asyncHandler(async (req: Request, res: Response) => {
   const filters = leadQuerySchema.parse(req.query);
   const result = await leadService.getLeads(filters);

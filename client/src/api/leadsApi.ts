@@ -1,6 +1,6 @@
 import api from "./axios";
 import type { ApiResponse } from "../types/api";
-import type { Lead, CreateLeadData, UpdateLeadData, LeadFilters } from "../types/lead";
+import type { Lead, LeadStats, CreateLeadData, UpdateLeadData, LeadFilters } from "../types/lead";
 
 const buildParams = (filters: LeadFilters) => {
   const params: Record<string, string> = {};
@@ -14,6 +14,8 @@ const buildParams = (filters: LeadFilters) => {
 };
 
 export const leadsApi = {
+  getStats: () => api.get<ApiResponse<LeadStats>>("/leads/stats"),
+
   getAll: (filters: LeadFilters = {}) =>
     api.get<ApiResponse<Lead[]>>("/leads", { params: buildParams(filters) }),
 

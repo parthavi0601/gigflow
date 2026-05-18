@@ -14,6 +14,11 @@ export const DashboardLayout = ({ children, title }: DashboardLayoutProps) => {
 
   return (
     <div className="page-layout">
+      <div className="mesh-bg" aria-hidden="true">
+        <div className="mesh-orb mesh-orb-1" />
+        <div className="mesh-orb mesh-orb-2" />
+        <div className="mesh-orb mesh-orb-3" />
+      </div>
       <Sidebar />
       <div className={cn("main-content", !sidebarOpen && "main-content-collapsed")}>
         <Navbar title={title} />

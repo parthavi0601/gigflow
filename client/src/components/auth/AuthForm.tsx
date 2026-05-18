@@ -6,7 +6,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, User } from "lucide-react";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/Button";
-import { Select } from "../ui/Select";
 import { authApi } from "../../api/authApi";
 import { useAuthStore } from "../../store/authStore";
 import { ROUTES } from "../../constants/routes";
@@ -24,7 +23,6 @@ const registerSchema = z.object({
     .min(8, "At least 8 characters")
     .regex(/[A-Z]/, "Must contain uppercase")
     .regex(/[0-9]/, "Must contain a number"),
-  role: z.enum(["admin", "sales"]).optional(),
 });
 
 type LoginValues = z.infer<typeof loginSchema>;
@@ -96,18 +94,6 @@ export const AuthForm = ({ mode }: AuthFormProps) => {
         error={errors.password?.message}
         {...register("password")}
       />
-      {!isLogin && (
-        <Select
-          id="auth-role"
-          label="Role"
-          options={[
-            { value: "sales", label: "Sales" },
-            { value: "admin", label: "Admin" },
-          ]}
-          {...register("role")}
-        />
-      )}
-
       {apiError && (
         <div
           style={{

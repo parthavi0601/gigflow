@@ -1,112 +1,114 @@
 import { useEffect, useState } from "react";
-import { Plus, Download } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ArrowRight, Plus, Sparkles } from "lucide-react";
 import { DashboardLayout } from "../components/layout/DashboardLayout";
 import { StatsCards } from "../components/dashboard/StatsCards";
-import { SearchBar } from "../components/leads/SearchBar";
-import { FilterBar } from "../components/leads/FilterBar";
-import { LeadTable } from "../components/leads/LeadTable";
-import { Pagination } from "../components/leads/Pagination";
-import { LeadFormModal } from "../components/leads/LeadFormModal";
-import { Button } from "../components/ui/Button";
 import { Card } from "../components/ui/Card";
-import { useLeadStore } from "../store/leadStore";
+import { Button } from "../components/ui/Button";
+import { Spinner } from "../components/ui/Spinner";
 import { useAuthStore } from "../store/authStore";
 import { leadsApi } from "../api/leadsApi";
-import { downloadFile } from "../utils/downloadFile";
-import type { Lead } from "../types/lead";
+import { ROUTES } from "../constants/routes";
+import { STATUS_COLORS } from "../constants/lead";
+import type { Lead, LeadStats } from "../types/lead";
 
 export const DashboardPage = () => {
-  const { leads, pagination, filters, fetchLeads } = useLeadStore();
   const { user } = useAuthStore();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editLead, setEditLead] = useState<Lead | null>(null);
-  const [isExporting, setIsExporting] = useState(false);
+  const [stats, setStats] = useState<LeadStats | null>(null);
+  const [recent, setRecent] = useState<Lead[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchLeads();
-  }, [fetchLeads]);
+    const load = async () => {
+      setLoading(true);
+      try {
+        const [statsRes, leadsRes] = await Promise.all([
+          leadsApi.getStats(),
+          leadsApi.getAll({ sort: "latest", page: 1, limit: 5 }),
+        ]);
+        setStats(statsRes.data.data);
+        setRecent(leadsRes.data.data);
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
 
-  const handleEdit = (lead: Lead) => {
-    setEditLead(lead);
-    setModalOpen(true);
-  };
-
-  const handleAdd = () => {
-    setEditLead(null);
-    setModalOpen(true);
-  };
-
-  const handleExport = async () => {
-    setIsExporting(true);
-    try {
-      const res = await leadsApi.exportCsv(filters);
-      downloadFile(res.data as Blob, "gigflow-leads.csv");
-    } finally {
-      setIsExporting(false);
-    }
-  };
+  const hour = new Date().getHours();
+  const greeting =
+    hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
 
   return (
     <DashboardLayout title="Dashboard">
-      <StatsCards leads={leads} total={pagination.total} />
-
-      <Card>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "20px 20px 16px",
-            flexWrap: "wrap",
-            gap: 12,
-            borderBottom: "1px solid var(--surface-border)",
-          }}
-        >
-          <div>
-            <h2 style={{ fontSize: 16, fontWeight: 700, color: "var(--text-primary)" }}>
-              All Leads
-            </h2>
-            <p style={{ fontSize: 13, color: "var(--text-muted)" }}>
-              {pagination.total} total leads
-            </p>
-          </div>
-          <div style={{ display: "flex", gap: 8 }}>
-            {user?.role === "admin" && (
-              <Button variant="secondary" size="sm" onClick={handleExport} loading={isExporting}>
-                <Download size={15} />
-                Export CSV
+      <div className="dashboard-grid">
+        <div className="dashboard-main">
+          <section className="welcome-banner">
+            <div className="welcome-text">
+              <p className="welcome-greeting">
+                <Sparkles size={14} />
+                {greeting}
+              </p>
+              <h2 className="welcome-title font-display">
+                Hey, <span className="gradient-text">{user?.name?.split(" ")[0]}</span>
+              </h2>
+              <p className="welcome-sub">Your pipeline at a glance — stay ahead of every deal.</p>
+            </div>
+            <Link to={ROUTES.LEADS}>
+              <Button variant="primary" size="sm">
+                <Plus size={15} />
+                New Lead
               </Button>
-            )}
-            <Button variant="primary" size="sm" onClick={handleAdd}>
-              <Plus size={15} />
-              Add Lead
-            </Button>
+            </Link>
+          </section>
+
+          {loading ? (
+            <div className="dashboard-loading">
+              <Spinner size="lg" style={{ color: "var(--brand-500)" }} />
+            </div>
+          ) : stats ? (
+            <StatsCards stats={stats} />
+          ) : null}
+        </div>
+
+        <Card className="recent-card">
+          <div className="recent-header">
+            <div>
+              <h3 className="recent-title font-display">Recent Leads</h3>
+              <p className="recent-sub">Latest additions</p>
+            </div>
+            <Link to={ROUTES.LEADS} className="view-all-link">
+              View all
+              <ArrowRight size={14} />
+            </Link>
           </div>
-        </div>
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-            padding: "14px 20px",
-            borderBottom: "1px solid var(--surface-border)",
-            flexWrap: "wrap",
-          }}
-        >
-          <SearchBar />
-          <FilterBar />
-        </div>
-
-        <LeadTable onEdit={handleEdit} />
-        <Pagination />
-      </Card>
-
-      <LeadFormModal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        editLead={editLead}
-      />
+          {loading ? (
+            <div className="recent-loading">
+              <Spinner size="md" style={{ color: "var(--brand-500)" }} />
+            </div>
+          ) : recent.length === 0 ? (
+            <p className="recent-empty">No leads yet. Create your first one!</p>
+          ) : (
+            <ul className="recent-list">
+              {recent.map((lead, i) => (
+                <li key={lead._id} className="recent-item" style={{ animationDelay: `${i * 60}ms` }}>
+                  <Link to={ROUTES.LEAD_DETAILS(lead._id)} className="recent-item-link">
+                    <span className="recent-avatar">{lead.name.charAt(0).toUpperCase()}</span>
+                    <div className="recent-info">
+                      <span className="recent-name">{lead.name}</span>
+                      <span className="recent-email">{lead.email}</span>
+                    </div>
+                    <span className={`status-badge ${STATUS_COLORS[lead.status]}`}>
+                      {lead.status}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Card>
+      </div>
     </DashboardLayout>
   );
 };

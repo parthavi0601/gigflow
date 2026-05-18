@@ -59,7 +59,7 @@ export const LeadDetailsPage = () => {
     <DashboardLayout title="Lead Details">
       <div style={{ maxWidth: 720 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
-          <Link to={ROUTES.DASHBOARD}>
+          <Link to={ROUTES.LEADS}>
             <Button variant="ghost" size="icon">
               <ArrowLeft size={18} />
             </Button>

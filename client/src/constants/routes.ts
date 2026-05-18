@@ -2,6 +2,7 @@ export const ROUTES = {
   LOGIN: "/login",
   REGISTER: "/register",
   DASHBOARD: "/",
+  LEADS: "/leads",
   LEAD_DETAILS: (id: string) => `/leads/${id}`,
   LEAD_DETAILS_PATTERN: "/leads/:id",
   NOT_FOUND: "/404",

@@ -73,3 +73,23 @@ export const exportLeads = async (filters: LeadQueryInput) => {
   const query = buildQuery(filters);
   return Lead.find(query).populate("createdBy", "name email").sort({ createdAt: -1 }).lean();
 };
+
+export const getLeadStats = async () => {
+  const [total, grouped] = await Promise.all([
+    Lead.countDocuments(),
+    Lead.aggregate<{ _id: string; count: number }>([
+      { $group: { _id: "$status", count: { $sum: 1 } } },
+    ]),
+  ]);
+
+  const counts: Record<string, number> = {};
+  for (const row of grouped) counts[row._id] = row.count;
+
+  return {
+    total,
+    new: counts["New"] ?? 0,
+    contacted: counts["Contacted"] ?? 0,
+    qualified: counts["Qualified"] ?? 0,
+    lost: counts["Lost"] ?? 0,
+  };
+};

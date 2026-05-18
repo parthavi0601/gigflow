@@ -13,7 +13,12 @@ export const registerUser = async (data: RegisterInput) => {
   if (existing) throw new ApiError(409, "Email already registered");
 
   const hashedPassword = await bcrypt.hash(data.password, 12);
-  const user = await User.create({ ...data, password: hashedPassword });
+  const user = await User.create({
+    name: data.name,
+    email: data.email,
+    password: hashedPassword,
+    role: "sales",
+  });
   const token = signToken(user._id.toString(), user.role, user.email);
 
   return {

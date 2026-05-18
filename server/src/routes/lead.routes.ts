@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  getLeadStats,
   getLeads,
   getLeadById,
   createLead,
@@ -15,6 +16,7 @@ const router = Router();
 router.use(authenticate);
 
 router.get("/export/csv", requireRole("admin"), exportCsv);
+router.get("/stats", getLeadStats);
 router.get("/", getLeads);
 router.get("/:id", getLeadById);
 router.post("/", createLead);

@@ -31,6 +31,14 @@ export interface UpdateLeadData {
   source?: LeadSource;
 }
 
+export interface LeadStats {
+  total: number;
+  new: number;
+  contacted: number;
+  qualified: number;
+  lost: number;
+}
+
 export interface LeadFilters {
   status?: LeadStatus | "";
   source?: LeadSource | "";

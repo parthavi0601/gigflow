@@ -1,7 +1,7 @@
 import { useLeadStore } from "../../store/leadStore";
-import { LEAD_STATUSES, LEAD_SOURCES } from "../../constants/lead";
+import { LEAD_SOURCES } from "../../constants/lead";
 import { Select } from "../ui/Select";
-import type { LeadStatus, LeadSource } from "../../types/lead";
+import type { LeadSource } from "../../types/lead";
 
 const SORT_OPTIONS = [
   { value: "latest", label: "Latest First" },
@@ -13,16 +13,6 @@ export const FilterBar = () => {
 
   return (
     <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
-      <Select
-        options={LEAD_STATUSES}
-        placeholder="All Statuses"
-        value={filters.status ?? ""}
-        onChange={(e) =>
-          setFilters({ status: (e.target.value as LeadStatus) || undefined, page: 1 })
-        }
-        aria-label="Filter by status"
-        style={{ minWidth: 140 }}
-      />
       <Select
         options={LEAD_SOURCES}
         placeholder="All Sources"
