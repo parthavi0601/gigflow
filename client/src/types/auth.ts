@@ -10,6 +10,11 @@ export interface AuthResponse {
   user: AuthUser;
 }
 
+export interface RegisterResponse {
+  requiresVerification: boolean;
+  email: string;
+}
+
 export interface LoginCredentials {
   email: string;
   password: string;
@@ -20,4 +25,9 @@ export interface RegisterCredentials {
   email: string;
   password: string;
   role?: "admin" | "sales";
+}
+
+export interface VerifyOtpCredentials {
+  email: string;
+  otp: string;
 }

@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, User } from "lucide-react";
+import { Mail, Lock, User, KeyRound, ArrowLeft } from "lucide-react";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/Button";
 import { authApi } from "../../api/authApi";
@@ -37,6 +37,12 @@ export const AuthForm = ({ mode }: AuthFormProps) => {
   const { login } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
+  
+  // OTP Verification State
+  const [step, setStep] = useState<"form" | "otp">("form");
+  const [registeredEmail, setRegisteredEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  
   const isLogin = mode === "login";
 
   const {
@@ -51,11 +57,21 @@ export const AuthForm = ({ mode }: AuthFormProps) => {
     setIsLoading(true);
     setApiError(null);
     try {
-      const res = isLogin
-        ? await authApi.login(data as LoginValues)
-        : await authApi.register(data as RegisterValues);
-      login(res.data.data.token, res.data.data.user);
-      navigate(ROUTES.DASHBOARD);
+      if (isLogin) {
+        const res = await authApi.login(data as LoginValues);
+        // We know login returns AuthResponse with token
+        // We have to cast to any because TS thinks it might be RegisterResponse based on api type union
+        const authData = (res.data as any).data;
+        login(authData.token, authData.user);
+        navigate(ROUTES.DASHBOARD);
+      } else {
+        const res = await authApi.register(data as RegisterValues);
+        const regData = (res.data as any).data;
+        if (regData.requiresVerification) {
+          setRegisteredEmail(regData.email);
+          setStep("otp");
+        }
+      }
     } catch (err: unknown) {
       const error = err as { response?: { data?: { message?: string } } };
       setApiError(error.response?.data?.message ?? "Something went wrong");
@@ -63,6 +79,69 @@ export const AuthForm = ({ mode }: AuthFormProps) => {
       setIsLoading(false);
     }
   };
+
+  const onOtpSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (otp.length !== 6) {
+      setApiError("OTP must be exactly 6 digits");
+      return;
+    }
+    setIsLoading(true);
+    setApiError(null);
+    try {
+      const res = await authApi.verifyOtp({ email: registeredEmail, otp });
+      const authData = (res.data as any).data;
+      login(authData.token, authData.user);
+      navigate(ROUTES.DASHBOARD);
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setApiError(error.response?.data?.message ?? "Invalid OTP code");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (step === "otp") {
+    return (
+      <form onSubmit={onOtpSubmit} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+        <div style={{ textAlign: "center", marginBottom: 8 }}>
+          <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.5 }}>
+            We sent a verification code to<br/>
+            <strong style={{ color: "var(--text-primary)" }}>{registeredEmail}</strong>
+          </p>
+        </div>
+
+        <Input
+          id="auth-otp"
+          label="Verification Code"
+          type="text"
+          placeholder="6-digit code"
+          maxLength={6}
+          icon={<KeyRound size={16} />}
+          value={otp}
+          onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
+        />
+
+        {apiError && (
+          <div style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.25)", borderRadius: "var(--radius-sm)", padding: "10px 14px", fontSize: 13, color: "var(--error)" }}>
+            {apiError}
+          </div>
+        )}
+
+        <Button type="submit" variant="primary" size="lg" loading={isLoading} style={{ marginTop: 4 }}>
+          Verify & Sign In
+        </Button>
+
+        <button 
+          type="button" 
+          onClick={() => setStep("form")} 
+          style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center", gap: 6, cursor: "pointer", marginTop: 8 }}
+        >
+          <ArrowLeft size={14} /> Back to register
+        </button>
+      </form>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
@@ -95,16 +174,7 @@ export const AuthForm = ({ mode }: AuthFormProps) => {
         {...register("password")}
       />
       {apiError && (
-        <div
-          style={{
-            background: "rgba(239,68,68,0.08)",
-            border: "1px solid rgba(239,68,68,0.25)",
-            borderRadius: "var(--radius-sm)",
-            padding: "10px 14px",
-            fontSize: 13,
-            color: "var(--error)",
-          }}
-        >
+        <div style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.25)", borderRadius: "var(--radius-sm)", padding: "10px 14px", fontSize: 13, color: "var(--error)" }}>
           {apiError}
         </div>
       )}

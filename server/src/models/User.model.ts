@@ -6,6 +6,9 @@ export interface IUser {
   email: string;
   password: string;
   role: "admin" | "sales";
+  isVerified: boolean;
+  otp?: string;
+  otpExpiry?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -16,6 +19,9 @@ const userSchema = new mongoose.Schema<IUser>(
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     password: { type: String, required: true, select: false },
     role: { type: String, enum: ["admin", "sales"], default: "sales" },
+    isVerified: { type: Boolean, default: false },
+    otp: { type: String },
+    otpExpiry: { type: Date },
   },
   { timestamps: true }
 );

@@ -47,7 +47,7 @@ export const DashboardPage = () => {
           <section className="welcome-banner">
             <div className="welcome-text">
               <p className="welcome-greeting">
-                
+                <Sparkles size={14} />
                 {greeting}
               </p>
               <h2 className="welcome-title font-display">

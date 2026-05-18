@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { asyncHandler } from "../utils/asyncHandler";
-import { registerSchema, loginSchema } from "../validators/auth.validator";
+import { registerSchema, loginSchema, verifyOtpSchema } from "../validators/auth.validator";
 import * as authService from "../services/auth.service";
 
 export const register = asyncHandler(async (req: Request, res: Response) => {
@@ -18,4 +18,10 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
 export const getMe = asyncHandler(async (req: Request, res: Response) => {
   const user = await authService.getAuthUser(req.user!.id);
   res.status(200).json({ success: true, message: "User fetched", data: user });
+});
+
+export const verifyOtp = asyncHandler(async (req: Request, res: Response) => {
+  const data = verifyOtpSchema.parse(req.body);
+  const result = await authService.verifyOtp(data.email, data.otp);
+  res.status(200).json({ success: true, message: "Verification successful", data: result });
 });
