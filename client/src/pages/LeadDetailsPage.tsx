@@ -77,7 +77,7 @@ export const LeadDetailsPage = () => {
           </Button>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 24, alignItems: "start" }}>
+        <div className="lead-details-grid">
           {/* Left Column */}
           <div style={{ display: "grid", gap: 16 }}>
             <Card>

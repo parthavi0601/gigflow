@@ -62,7 +62,7 @@ export const PipelineHealth = ({ stats }: PipelineHealthProps) => {
         </div>
 
         {/* Actionable Insights */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+        <div className="pipeline-insights-grid">
           <div style={{ display: "flex", gap: 12, padding: 16, background: "var(--surface-1)", borderRadius: "var(--radius-md)", border: "1px solid var(--surface-border)" }}>
             <div style={{ width: 40, height: 40, borderRadius: "50%", background: "var(--brand-50)", color: "var(--brand-500)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
               <Users size={20} />

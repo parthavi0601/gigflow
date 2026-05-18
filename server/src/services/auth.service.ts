@@ -17,6 +17,12 @@ export const registerUser = async (data: RegisterInput) => {
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
   const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 mins
 
+  try {
+    await sendOTP(data.email, otp);
+  } catch (error) {
+    throw new ApiError(500, "Failed to send verification email. Please check server logs.");
+  }
+
   const user = await User.create({
     name: data.name,
     email: data.email,
@@ -26,8 +32,6 @@ export const registerUser = async (data: RegisterInput) => {
     otp,
     otpExpiry,
   });
-
-  await sendOTP(user.email, otp);
 
   return {
     requiresVerification: true,

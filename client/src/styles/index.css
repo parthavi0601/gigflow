@@ -1239,6 +1239,24 @@ h1, h2, h3, .font-display {
   .navbar { margin: 0; border-radius: 0; top: 0; }
   .page-content { padding: 16px; }
   .stats-grid { grid-template-columns: 1fr; }
+  
+  /* Responsive Grids */
+  .lead-details-grid { grid-template-columns: 1fr !important; }
+  .pipeline-insights-grid { grid-template-columns: 1fr !important; }
+  .dashboard-grid { grid-template-columns: 1fr !important; }
+}
+
+/* Default Grid Classes */
+.lead-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+  align-items: start;
+}
+.pipeline-insights-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
 }
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
