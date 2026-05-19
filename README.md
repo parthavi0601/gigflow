@@ -48,6 +48,7 @@ cd gigflow
    CLIENT_URL=http://localhost:5173
    RESEND_API_KEY=your_resend_api_key
    SENDER_EMAIL=noreply@yourdomain.com
+   OPENAI_API_KEY=
    ```
 4. Start the backend development server:
    ```bash
